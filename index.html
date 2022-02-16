@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TOKUMEI</title>
+        <!--HI NATHAN!-->
+        <!--Set meta-->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--Load CSS / Bootstrap5-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+        <!--Link Google Fonts-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet"> 
+    </head>
+
+    <body>
+        <div class="container-fluid vh-100 bg-dark d-flex align-items-center flex-column">
+            <div class="container-fluid vh-90 bg-light">
+                <div id="status" class="bg-dark vh-10 text-light d-flex align-items-center justify-content-center f-oswald h1">Connecting...</div>
+                <div id="chatbox" class="vh-75">
+                </div>
+                <form id="input_box" name="message" class="d-flex flex-row justify-content-center" onsubmit="return send_message()">
+                    <input name="user_message" type="text" id="user_message" class="vw-75 mx-auto" placeholder="Type a message...">
+                    <input name="submit" type="submit" class="vw-20 mx-auto" value="Send">
+                </form>
+            </div>
+            <div class="container-fluid vh-10 bg-dark"> 
+            </div>
+        </div>
+
+        <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script>
+            function makeid(length) {
+                var result           = '';
+                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < length; i++ ) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                return "TOKUMEI-" + result;
+            }
+
+            var id = makeid(5)
+            var peer = new Peer([id]);
+            var send_message;
+            var status = document.getElementById("status");
+
+            peer.on('open' , function(id) {
+                console.log('My peer ID is: ' + id);
+                let mode = prompt("Your Peer ID: " + id.slice(id.length-5) + "\nEnter the Peer ID of the person you want to connect to\nOr press cancel to host.");
+                console.log(mode);
+                if (mode) {
+                    mode = "TOKUMEI-" + mode;
+                    console.log("Connecting to " + mode + "...");
+                    var conn = peer.connect(mode);
+                    conn.on('open', function() {
+                        status.innerHTML = "Connected to peer!"
+                        console.log("Connection opened");
+                        send_message = function() {
+                            message = document.getElementById("user_message").value
+                            messagebox = document.getElementById("chatbox");
+                            messagebox.innerHTML += "<br>YOU: " + message;
+                            conn.send(message);
+                            document.getElementById("user_message").value = "";
+                            messagebox.scrollTop = messagebox.scrollHeight;
+                            return false;
+                        }
+                        conn.on('data', function(data){
+                            messagebox = document.getElementById("chatbox");
+                            messagebox.innerHTML += "<br>PEER: " + data;
+                            messagebox.scrollTop = messagebox.scrollHeight;
+                        })
+                    });
+                } else {
+                    console.log("Hosting mode...");
+                    console.log("Awaiting connection....");
+                    peer.on('connection', function(conn){
+                        conn.on('open', function() {
+                            status.innerHTML = "Connected to peer!"
+                            console.log("Connection opened");
+                            send_message = function() {
+                                message = document.getElementById("user_message").value
+                                messagebox = document.getElementById("chatbox");
+                                messagebox.innerHTML += "<br>YOU: " + message;
+                                conn.send(message);
+                                document.getElementById("user_message").value = "";
+                                messagebox.scrollTop = messagebox.scrollHeight;
+                                return false;
+                            }
+                            conn.on('data', function(data) {
+                                messagebox = document.getElementById("chatbox");
+                                messagebox.innerHTML += "<br>PEER: " + data;
+                                messagebox.scrollTop = messagebox.scrollHeight;
+                            });
+                        });
+                    });
+                }
+            });
+            
+            
+            
+        </script>
+
+    </body>    
+</html> 
