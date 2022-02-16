@@ -19,10 +19,10 @@
         <div class="container-fluid vh-100 bg-dark d-flex align-items-center flex-column">
             <div class="container-fluid vh-90 bg-light">
                 <div id="status" class="bg-dark vh-10 text-light d-flex align-items-center justify-content-center f-oswald h1">Connecting...</div>
-                <div id="chatbox" class="vh-75">
+                <div id="chatbox" class="vh-75 mx-3">
                 </div>
-                <form id="input_box" name="message" class="d-flex flex-row justify-content-center" onsubmit="return send_message()">
-                    <input name="user_message" type="text" id="user_message" class="vw-75 mx-auto" placeholder="Type a message...">
+                <form autocomplete="off" id="input_box" name="message" class="d-flex flex-row justify-content-center" onsubmit="return send_message()">
+                    <input autocomplete="false" name="user_message" type="text" id="user_message" class="vw-75 mx-auto" placeholder="Type a message...">
                     <input name="submit" type="submit" class="vw-20 mx-auto" value="Send">
                 </form>
             </div>
@@ -43,10 +43,29 @@
                 return "TOKUMEI-" + result;
             }
 
+            function message_handler (conn) {
+                status.innerHTML = "Connected!";
+                console.log("Connection opened");
+                send_message = function() {
+                    message = document.getElementById("user_message").value
+                    messagebox = document.getElementById("chatbox");
+                    messagebox.innerHTML += "<br>YOU: " + message;
+                    conn.send(message);
+                    document.getElementById("user_message").value = "";
+                    messagebox.scrollTop = messagebox.scrollHeight;
+                    return false;
+                }
+                conn.on('data', function(data){
+                    messagebox = document.getElementById("chatbox");
+                    messagebox.innerHTML += "<br>PEER: " + data;
+                    messagebox.scrollTop = messagebox.scrollHeight;
+                })
+            };
+
             var id = makeid(5)
             var peer = new Peer([id]);
             var send_message;
-            var status = document.getElementById("status");
+            let status = document.getElementById("status");
 
             peer.on('open' , function(id) {
                 console.log('My peer ID is: ' + id);
@@ -56,52 +75,16 @@
                     mode = "TOKUMEI-" + mode;
                     console.log("Connecting to " + mode + "...");
                     var conn = peer.connect(mode);
-                    conn.on('open', function() {
-                        status.innerHTML = "Connected to peer!"
-                        console.log("Connection opened");
-                        send_message = function() {
-                            message = document.getElementById("user_message").value
-                            messagebox = document.getElementById("chatbox");
-                            messagebox.innerHTML += "<br>YOU: " + message;
-                            conn.send(message);
-                            document.getElementById("user_message").value = "";
-                            messagebox.scrollTop = messagebox.scrollHeight;
-                            return false;
-                        }
-                        conn.on('data', function(data){
-                            messagebox = document.getElementById("chatbox");
-                            messagebox.innerHTML += "<br>PEER: " + data;
-                            messagebox.scrollTop = messagebox.scrollHeight;
-                        })
-                    });
+                    conn.on('open', function(){message_handler(conn)});
                 } else {
                     console.log("Hosting mode...");
                     console.log("Awaiting connection....");
+                    status.innerHTML = "Awaiting connection...";
                     peer.on('connection', function(conn){
-                        conn.on('open', function() {
-                            status.innerHTML = "Connected to peer!"
-                            console.log("Connection opened");
-                            send_message = function() {
-                                message = document.getElementById("user_message").value
-                                messagebox = document.getElementById("chatbox");
-                                messagebox.innerHTML += "<br>YOU: " + message;
-                                conn.send(message);
-                                document.getElementById("user_message").value = "";
-                                messagebox.scrollTop = messagebox.scrollHeight;
-                                return false;
-                            }
-                            conn.on('data', function(data) {
-                                messagebox = document.getElementById("chatbox");
-                                messagebox.innerHTML += "<br>PEER: " + data;
-                                messagebox.scrollTop = messagebox.scrollHeight;
-                            });
-                        });
+                        conn.on('open', function(){message_handler(conn)});
                     });
                 }
             });
-            
-            
-            
         </script>
 
     </body>    
