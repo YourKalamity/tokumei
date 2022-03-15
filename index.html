@@ -17,25 +17,28 @@
 
     <body>
         <div class="container-fluid vh-100 bg-dark d-flex align-items-center flex-column">
-            <div class="container-fluid vh-90 bg-light">
+            <div class="container-fluid vh-100 bg-light">
                 <div id="status" class="bg-dark vh-10 text-light d-flex align-items-center justify-content-center f-oswald h1">Connecting...</div>
-                <div id="chatbox" class="vh-75 mx-3">
+                <div id="chatbox" class="vh-85 mx-3">
                 </div>
                 <form autocomplete="off" id="input_box" name="message" class="d-flex flex-row justify-content-center" onsubmit="return send_message()">
                     <input autocomplete="false" name="user_message" type="text" id="user_message" class="vw-75 mx-auto" placeholder="Type a message...">
                     <input name="submit" type="submit" class="vw-20 mx-auto" value="Send">
                 </form>
             </div>
-            <div class="container-fluid vh-10 bg-dark"> 
             </div>
         </div>
 
         <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script>
+            
             function makeid(length) {
+                if (isNaN(length) || length < 1 || length > 256) {
+                    length = 5;
+                }
                 var result           = '';
-                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var characters       = 'abcdefghijklmnopqrstuvwxyz';
                 var charactersLength = characters.length;
                 for ( var i = 0; i < length; i++ ) {
                     result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -62,11 +65,18 @@
                 })
             };
 
+            function connection_handler(id){
+                console.log("My peer ID is: " + id);
+                let mode = prompt("Your Peer ID: " + id.slice(id.length-5) + "\nEnter the Peer ID of the person you want to connect to\nOr press cancel to host.");
+                console.log(mode);
+            }
+
             var id = makeid(5)
-            var peer = new Peer([id]);
+            var peer = new Peer(id);
+
             var send_message;
             let status = document.getElementById("status");
-
+            
             peer.on('open' , function(id) {
                 console.log('My peer ID is: ' + id);
                 let mode = prompt("Your Peer ID: " + id.slice(id.length-5) + "\nEnter the Peer ID of the person you want to connect to\nOr press cancel to host.");
