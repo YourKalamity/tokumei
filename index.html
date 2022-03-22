@@ -46,6 +46,30 @@
                 return "TOKUMEI-" + result;
             }
 
+            function peer_open_handler(id){
+                console.log('My peer ID is: ' + id);
+                let mode = prompt("Your Peer ID: " + id.slice(id.length-5) + "\nEnter the Peer ID of the person you want to connect to\nOr press cancel to host.");
+                console.log(mode);
+                if (mode) {
+                    mode = "TOKUMEI-" + mode;
+                    console.log("Connecting to " + mode + "...");
+                    var conn = peer.connect(mode);
+                    conn.on('open', function(){message_handler(conn)});
+                } else {
+                    console.log("Hosting mode...");
+                    console.log("Awaiting connection....");
+                    status.innerHTML = "Awaiting connection...";
+                    peer.on('connection', function(conn){
+                        conn.on('open', function(){message_handler(conn)});
+                    });
+                }}
+
+            function connection_handler(id){
+                console.log("My peer ID is: " + id);
+                let mode = prompt("Your Peer ID: " + id.slice(id.length-5) + "\nEnter the Peer ID of the person you want to connect to\nOr press cancel to host.");
+                console.log(mode);
+            }
+
             function message_handler (conn) {
                 status.innerHTML = "Connected!";
                 console.log("Connection opened");
@@ -65,12 +89,6 @@
                 })
             };
 
-            function connection_handler(id){
-                console.log("My peer ID is: " + id);
-                let mode = prompt("Your Peer ID: " + id.slice(id.length-5) + "\nEnter the Peer ID of the person you want to connect to\nOr press cancel to host.");
-                console.log(mode);
-            }
-
             var id = makeid(5)
             var peer = new Peer(id);
 
@@ -78,22 +96,7 @@
             let status = document.getElementById("status");
             
             peer.on('open' , function(id) {
-                console.log('My peer ID is: ' + id);
-                let mode = prompt("Your Peer ID: " + id.slice(id.length-5) + "\nEnter the Peer ID of the person you want to connect to\nOr press cancel to host.");
-                console.log(mode);
-                if (mode) {
-                    mode = "TOKUMEI-" + mode;
-                    console.log("Connecting to " + mode + "...");
-                    var conn = peer.connect(mode);
-                    conn.on('open', function(){message_handler(conn)});
-                } else {
-                    console.log("Hosting mode...");
-                    console.log("Awaiting connection....");
-                    status.innerHTML = "Awaiting connection...";
-                    peer.on('connection', function(conn){
-                        conn.on('open', function(){message_handler(conn)});
-                    });
-                }
+                peer_open_handler(id);
             });
         </script>
 
