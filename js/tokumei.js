@@ -13,19 +13,36 @@ function makeid(length) {
 
 function peer_open_handler(id){
     console.log('My peer ID is: ' + id);
-    let mode = prompt("Your Peer ID: " + id.slice(id.length-5) + "\nEnter the Peer ID of the person you want to connect to\nOr press cancel to wait for a connection");
-    if (mode) {
-        mode = "TOKUMEI-" + mode;
-        console.log("Connecting to " + mode + "...");
+    main_menu_modal.show();
+    let peer_id_input = document.getElementById("PeerID_inputbox");
+    peer_id_input.focus();
+    peer_id_input.select();
+    connect_mode = function() {
+        main_menu_modal.hide()
+        connection_id = peer_id_input.value
+        mode = "TOKUMEI-" + connection_id;
+        console.log("Connecting to " + connection_id + "...");
         var conn = peer.connect(mode);
         conn.on('open', function(){message_handler(conn)});
-    } else {
+        return false;
+    } 
+    await_mode = function() {
         console.log("Hosting mode...");
         console.log("Awaiting connection....");
         status_object.innerHTML = "Awaiting connection...";
+        main_menu_modal.hide()
+        await_mode_modal.show()
+        let peer_id_display = document.getElementById("peer_id_display");
+        peer_id_display.innerHTML = id.substr(id.length - 5);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(id.substr(id.length - 5));
+            let clipboard_notification = document.getElementById("clipboard_notification");
+            clipboard_notification.hidden = false;
+        }
         peer.on('connection', function(conn){
             conn.on('open', function(){message_handler(conn)});
         });
+        return false;
     }}
 
 function message_handler (conn) {
@@ -52,7 +69,10 @@ var peer = new Peer(id);
 
 var send_message;
 let status_object = document.getElementById("status");
-
+var main_menu_modal = new bootstrap.Modal(document.getElementById('main_menu_modal'));
+var await_mode_modal = new bootstrap.Modal(document.getElementById('await_mode_modal'));
+var connect_mode;
+var await_mode;
 
 peer.on('open' , function(id) {
     peer_open_handler(id);

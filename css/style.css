@@ -27,6 +27,11 @@
     max-height: 85vh;
 }
 
+.vh-80 {
+    min-height: 80vh;
+    max-height: 80vh;
+}
+
 /*
  *  || Width Classes
  */

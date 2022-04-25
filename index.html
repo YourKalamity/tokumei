@@ -19,16 +19,60 @@
                 <div id="status" class="bg-dark vh-10 text-light d-flex align-items-center justify-content-center f-oswald h1">
                         Connecting...
                 </div>
-                <div id="chatbox"class="vh-85 mx-3"></div>
+                <div id="chatbox"class="vh-80 mx-3"></div>
 
                 <form autocomplete="off" id="input_box" name="message" class="d-flex flex-row justify-content-center" onsubmit="return send_message();">
                     <input autocomplete="false" name="user_message" type="text" id="user_message" class="vw-75 mx-auto" placeholder="Type a message...">
-                    <input name="submit" type="submit" class="vw-20 mx-auto" value="Send">
+                    <input name="submit" type="submit" class="vw-20 mx-auto btn btn-primary" value="Send">
                 </form>
 
             </div>
             </div>
         </div>
+        <div class="modal fade" id="main_menu_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">TOKUMEI</h5>
+                </div>
+                <div class="modal-body">
+                <p>An open-source peer to peer chat application.</p>
+                <p>Enter the Peer ID you wish to connect to and press the Connect Button</p>
+                <form autocomplete="off" id="peer_input_box" name="PeerID_inputform" class="d-flex flex-row justify-content-center" onsubmit="return connect_mode();">
+                    <div class="input-group mb-3">
+                        <input autocomplete="false" id="PeerID_inputbox"name="user_message" type="text" id="user_message" class="w-60 mx-auto form-control" placeholder="Enter Peer ID...">
+                        <input name="submit" type="submit" class="w-25 mx-auto btn btn-outline-primary" value="Connect">
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <p>Alternatively, get a Peer ID for another user to connect to you</p>
+                    <form autocomplete="off" id="await_input_box" name="SwitchToHost" class="d-flex flex-row justify-content-center w-100" onsubmit="return await_mode();">
+                        <input name="submit" type="submit" class="w-90 btn btn-primary" value="Get Peer ID">
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="await_mode_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Your PeerID</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <h1 class="text-center" id="peer_id_display"></h1>
+                  <p class="text-center"><b id="clipboard_notification" hidden="true">Copied to clipboard!</b><br></p>
+                  <p class="text-center">Give this ID to any peer trying to communicate with you</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got it!</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
         <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
