@@ -22,8 +22,8 @@
                 </div>
                 <div id="chatbox"class="vh-80 mx-3"></div>
                 <fieldset id="message_fieldset" disabled>
-                    <form autocomplete="off" id="input_box" name="message" class="d-flex flex-row justify-content-center" maxlength="256" onsubmit="return send_message();">
-                        <input autocomplete="false" name="user_message" type="text" id="user_message" class="vw-75 mx-auto" placeholder="Type a message...">
+                    <form autocomplete="off" id="input_box" name="message" class="d-flex flex-row justify-content-center"  onsubmit="return send_message();">
+                        <input autocomplete="false" name="user_message" type="text" id="user_message" class="vw-75 mx-auto" maxlength="256" placeholder="Type a message...">
                         <input name="submit" type="submit" class="vw-20 mx-auto btn btn-primary" value="Send">
                     </form>
                 </fieldset>
