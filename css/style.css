@@ -88,3 +88,11 @@ body {
 #chatbox {
     overflow:auto;
 }
+
+/*
+ * || Colour Classes
+ */
+
+.bg-primary {
+    background-color: #106cfc;
+}

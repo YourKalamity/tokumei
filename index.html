@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>TOKUMEI</title>
+        <!--HI NATHAN-->
         <!--Set meta-->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,15 +17,16 @@
     <body>
         <div id="main_window" class="container-fluid vh-100 bg-dark d-flex align-items-center flex-column">
             <div id="chat_window_container" class="container-fluid vh-100 bg-light">
-                <div id="status" class="bg-dark vh-10 text-light d-flex align-items-center justify-content-center f-oswald h1">
+                <div id="status" class="bg-primary vh-10 text-light d-flex align-items-center justify-content-center f-oswald h1">
                         Connecting...
                 </div>
                 <div id="chatbox"class="vh-80 mx-3"></div>
-
-                <form autocomplete="off" id="input_box" name="message" class="d-flex flex-row justify-content-center" onsubmit="return send_message();">
-                    <input autocomplete="false" name="user_message" type="text" id="user_message" class="vw-75 mx-auto" placeholder="Type a message...">
-                    <input name="submit" type="submit" class="vw-20 mx-auto btn btn-primary" value="Send">
-                </form>
+                <fieldset id="message_fieldset" disabled>
+                    <form autocomplete="off" id="input_box" name="message" class="d-flex flex-row justify-content-center" maxlength="256" onsubmit="return send_message();">
+                        <input autocomplete="false" name="user_message" type="text" id="user_message" class="vw-75 mx-auto" placeholder="Type a message...">
+                        <input name="submit" type="submit" class="vw-20 mx-auto btn btn-primary" value="Send">
+                    </form>
+                </fieldset>
 
             </div>
             </div>
@@ -40,7 +42,7 @@
                 <p>Enter the Peer ID you wish to connect to and press the Connect Button</p>
                 <form autocomplete="off" id="peer_input_box" name="PeerID_inputform" class="d-flex flex-row justify-content-center" onsubmit="return connect_mode();">
                     <div class="input-group mb-3">
-                        <input autocomplete="false" id="PeerID_inputbox"name="user_message" type="text" id="user_message" class="w-60 mx-auto form-control" placeholder="Enter Peer ID...">
+                        <input autocomplete="false" id="PeerID_inputbox"name="user_message" type="text" id="user_message" class="w-60 mx-auto form-control" minlength="5" maxlength="5" placeholder="Enter Peer ID...">
                         <input name="submit" type="submit" class="w-25 mx-auto btn btn-outline-primary" value="Connect">
                     </div>
                 </form>
