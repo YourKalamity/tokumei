@@ -46,14 +46,18 @@ function message_handler (conn) {
     console.log("Connection opened");
     conn.on('data', function(data){
         messagebox = document.getElementById("chatbox");
-        messagebox.innerHTML += "<br>PEER: " + data;
+        var new_message = document.createElement("div");
+        messagebox.appendChild(new_message)
+        insertUntrustedText(new_message, "PEER: "+ data, 'p');
         messagebox.scrollTop = messagebox.scrollHeight;
     })
     conn.on('close', function(){message_closer()});
     send_message = function() {
         message = document.getElementById("user_message").value
         messagebox = document.getElementById("chatbox");
-        messagebox.innerHTML += "<br>YOU: " + message;
+        var new_message = document.createElement("div");
+        messagebox.appendChild(new_message)
+        insertUntrustedText(new_message, "YOU: "+ message, 'p');
         conn.send(message);
         document.getElementById("user_message").value = "";
         messagebox.scrollTop = messagebox.scrollHeight;
@@ -62,9 +66,28 @@ function message_handler (conn) {
 };
 
 function message_closer() {
-    let message_fieldset = document.getElementById("message_fieldset");
+    let message_fieldset = document.getElementById("message_fieldset"); 
     message_fieldset.setAttribute("disabled", "disabled");
     status_object.innerHTML = "Disconnected!";
+}
+
+function insertUntrustedText(domElement, untrustedText, newlineStrategy) {
+    domElement.innerHTML = '';
+    var lines = untrustedText.replace(/\r/g, '').split('\n');
+    var linesLength = lines.length;
+    if(newlineStrategy === 'br') {
+        for(var i = 0; i < linesLength; i++) {
+            domElement.appendChild(document.createTextNode(lines[i]));
+            domElement.appendChild(document.createElement('br'));
+        }
+    }
+    else {
+        for(var i = 0; i < linesLength; i++) {
+            var lineElement = document.createElement(newlineStrategy);
+            lineElement.textContent = lines[i];
+            domElement.appendChild(lineElement);
+        }
+    }
 }
 
 var id = makeid(5)
