@@ -88,7 +88,7 @@ function receive_message(message) {
     var new_message = document.createElement("div");
     // Add message to chatbox
     messagebox.appendChild(new_message)
-    insertUntrustedText(new_message, "PEER: "+ data, 'p');
+    insertUntrustedText(new_message, "PEER: "+ message, 'p');
     // Scroll to the bottom of the chatbox
     messagebox.scrollTop = messagebox.scrollHeight;
 }
@@ -97,6 +97,7 @@ function receive_message(message) {
 * Function that brings up the main menu modal when connected to the PeerJS network
 */
 function peer_open_handler(){
+    console.log("Connected to PeerJS network!");
     main_menu_modal.show();
 }
 
