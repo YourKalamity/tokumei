@@ -17,10 +17,16 @@
     <body>
         <div id="main_window" class="container-fluid vh-100 bg-dark d-flex align-items-center flex-column">
             <div id="chat_window_container" class="container-fluid vh-100 bg-light">
+                
+                <!--Status Display-->
                 <div id="status" class="bg-primary vh-10 text-light d-flex align-items-center justify-content-center f-oswald h1">
                         Connecting...
                 </div>
+
+                <!--Chat Display-->
                 <div id="chatbox"class="vh-80 mx-3"></div>
+
+                <!--Message Input Display-->
                 <fieldset id="message_fieldset" disabled>
                     <form autocomplete="off" id="input_box" name="message" class="d-flex flex-row justify-content-center"  onsubmit="return send_message();">
                         <input autocomplete="false" name="user_message" type="text" id="user_message" class="vw-75 mx-auto" maxlength="256" placeholder="Type a message...">
@@ -31,15 +37,19 @@
             </div>
             </div>
         </div>
+        
+        <!--Main Menu Screen-->
         <div class="modal fade" id="main_menu_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
             <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">TOKUMEI</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">TOKUMEI</h5>
                 </div>
                 <div class="modal-body">
                 <p>An open-source peer to peer chat application.</p>
                 <p>Enter the Peer ID you wish to connect to and press the Connect Button</p>
+
+                <!--Peer ID Input-->
                 <form autocomplete="off" id="peer_input_box" name="PeerID_inputform" class="d-flex flex-row justify-content-center" onsubmit="return connect_mode();">
                     <div class="input-group mb-3">
                         <input autocomplete="false" id="PeerID_inputbox"name="user_message" type="text" id="user_message" class="w-60 mx-auto form-control" minlength="5" maxlength="5" placeholder="Enter Peer ID...">
@@ -47,16 +57,20 @@
                     </div>
                 </form>
                 </div>
+
+                <!--Host Button-->
                 <div class="modal-footer d-flex justify-content-center">
                     <p>Alternatively, get a Peer ID for another user to connect to you</p>
                     <form autocomplete="off" id="await_input_box" name="SwitchToHost" class="d-flex flex-row justify-content-center w-100" onsubmit="return await_mode();">
                         <input name="submit" type="submit" class="w-90 btn btn-primary" value="Get Peer ID">
                     </form>
                 </div>
+            
             </div>
             </div>
         </div>
 
+        <!--Host Menu Screen-->
         <div class="modal fade" id="await_mode_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -75,7 +89,8 @@
               </div>
             </div>
           </div>
-
+        
+        <!--Load JS-->
         <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script src="js/tokumei.js"></script>
